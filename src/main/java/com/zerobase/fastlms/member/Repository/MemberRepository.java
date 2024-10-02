@@ -15,7 +15,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmailAuthKey(String emailAuthKey);
 
     // 비밀번호 초기화
-    Optional<Member> findByUserIdAndUserName(String userId, String userName);
+    Optional<Member> findByUserIdAndName(String userId, String name);
 
     //uuid 찾느 메서드
     Optional<Member> findByResetPasswordKey(String resetPasswordKey);

@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = Member.builder()
                 .userId(parameter.getUserId())
-                .userName(parameter.getUserName())
+                .name(parameter.getName())
                 .password(encPassword)
                 .phone(parameter.getPhone())
                 .regDt(LocalDateTime.now())
@@ -88,8 +88,8 @@ public class MemberServiceImpl implements MemberService {
     // 비밀번로 초기화 로직
     @Override
     public boolean sendResetPassword(ResetPasswordInput parameter) {
-        Optional<Member> optionalMember = memberRepository.findByUserIdAndUserName(
-                parameter.getUserId(), parameter.getUserName());
+        Optional<Member> optionalMember = memberRepository.findByUserIdAndName(
+                parameter.getUserId(), parameter.getName());
         if (optionalMember.isEmpty()) {
             throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
         }
@@ -158,6 +158,13 @@ public class MemberServiceImpl implements MemberService {
             throw new RuntimeException("유효한 날짜가 아닙니다.");
         }
         return true;
+    }
+
+    //회원목록
+    @Override
+    public List<Member> list() {
+
+        return memberRepository.findAll();
     }
 
     //로그인

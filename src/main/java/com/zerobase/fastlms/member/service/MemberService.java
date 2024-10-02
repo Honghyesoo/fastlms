@@ -2,7 +2,10 @@ package com.zerobase.fastlms.member.service;
 
 import com.zerobase.fastlms.member.dto.MemberInput;
 import com.zerobase.fastlms.member.dto.ResetPasswordInput;
+import com.zerobase.fastlms.member.entity.Member;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.List;
 
 public interface MemberService extends UserDetailsService {
 
@@ -25,8 +28,11 @@ public interface MemberService extends UserDetailsService {
 
     /**
      * 입력받은 uuid값이 유효한지 확인
-     * @param uuid
-     * @return
      */
     boolean chcekResetPassword(String uuid);
+
+    /**
+     * 회원 목록 리턴(관리자에서만 허용가능)
+     */
+    List<Member> list();
 }

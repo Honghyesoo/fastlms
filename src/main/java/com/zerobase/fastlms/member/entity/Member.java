@@ -22,7 +22,7 @@ public class Member implements UserDetails {
     private Long id;
 
     private String userId;
-    private String userName;
+    private String name;
     private String password;
     private String phone;
     private LocalDateTime regDt;  //회원가입 날짜
@@ -35,7 +35,7 @@ public class Member implements UserDetails {
     private LocalDateTime resetPasswordLimitDt; // 초기화 후 유효 날짜가 안 지나면 또 초기화x
 
     private boolean adminYn; //관리자 판단
-     
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
