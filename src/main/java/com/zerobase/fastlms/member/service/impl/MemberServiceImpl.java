@@ -64,6 +64,7 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
+    //이메일 인증
     @Override
     public boolean emailAuth(String uuid) {
 
@@ -73,6 +74,10 @@ public class MemberServiceImpl implements MemberService {
             return false;
         }
         Member member = optionalMember.get();
+
+        if (member.isEmailAuthYn()){
+            return false;
+        }
         member.setEmailAuthYn(true);
         member.setEmailAuthDt(LocalDateTime.now());
         memberRepository.save(member);
@@ -134,7 +139,7 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
-    // 입력받은 uuid가 유효한지 확인
+    // 입력받은 uuid가 유효한지 확인 <비밀번호 초기화시>
     @Override
     public boolean chcekResetPassword(String uuid) {
         Optional<Member> optionalMember = memberRepository.findByResetPasswordKey(uuid);
@@ -155,6 +160,7 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
+    //로그인
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Optional<Member> optionalMember = memberRepository.findByUserId(userName);
@@ -169,6 +175,11 @@ public class MemberServiceImpl implements MemberService {
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        //관리자일때
+        if (member.isAdminYn()){
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
 
         return new User(member.getUserId(), member.getPassword(), grantedAuthorities);
     }
