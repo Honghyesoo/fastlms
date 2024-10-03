@@ -30,6 +30,8 @@ dependencies {
 	implementation 'org.mariadb.jdbc:mariadb-java-client:3.2.0'  // MariaDB용 JDBC 드라이버
 	implementation 'org.springframework.boot:spring-boot-starter-mail'  // 메일 전송을 위한 라이브러리
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+	implementation 'mysql:mysql-connector-java:8.0.33'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -37,6 +39,9 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+
+
 }
 
 

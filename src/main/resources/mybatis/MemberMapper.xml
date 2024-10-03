@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zerobase.fastlms.admin.mapper.MemberMapper">
+
+
+    <select id="selectListCount"
+            parameterType="com.zerobase.fastlms.admin.entity.MemberParam"
+            resultType="long">
+
+        SELECT COUNT(*)
+        FROM member
+        WHERE 1 = 1
+
+        <if test="searchType != null and searchValue != null and searchValue != ''">
+            <choose>
+                <when test="searchType == 'userId'">
+                    AND user_id LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+                <when test="searchType == 'name'">
+                    AND name LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+                <when test="searchType == 'phone'">
+                    AND phone LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+                <otherwise>
+                    AND (
+                    user_id LIKE CONCAT('%', #{searchValue}, '%')
+                    OR name LIKE CONCAT('%', #{searchValue}, '%')
+                    OR phone LIKE CONCAT('%', #{searchValue}, '%')
+                    )
+                </otherwise>
+            </choose>
+        </if>
+
+    </select>
+
+    <select id="selectList"
+            parameterType="com.zerobase.fastlms.admin.entity.MemberParam"
+            resultType="com.zerobase.fastlms.admin.dto.MemberDto">
+
+        SELECT * FROM member
+        WHERE 1 = 1
+
+        <if test="searchType != null and searchValue != null and searchValue != ''">
+            <choose>
+                <when test="searchType == 'userId'">
+                    AND user_id LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+                <when test="searchType == 'name'">
+                    AND name LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+                <when test="searchType == 'phone'">
+                    AND phone LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+                <otherwise>
+                    AND (
+                    user_id LIKE CONCAT('%', #{searchValue}, '%')
+                    OR name LIKE CONCAT('%', #{searchValue}, '%')
+                    OR phone LIKE CONCAT('%', #{searchValue}, '%')
+                    )
+                </otherwise>
+            </choose>
+        </if>
+        LIMIT #{pageStart},#{pageEnd}
+    </select>
+</mapper>
+
