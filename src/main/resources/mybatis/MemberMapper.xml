@@ -4,7 +4,6 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zerobase.fastlms.admin.mapper.MemberMapper">
 
-
     <select id="selectListCount"
             parameterType="com.zerobase.fastlms.admin.entity.MemberParam"
             resultType="long">

@@ -27,7 +27,7 @@ public class AdminMemberController {
 
         // 페이징처리
         long totalCount = 0;
-        if (members != null && members.size() > 0){
+        if (members != null && !members.isEmpty()){
             totalCount = members.get(0).getTotalCount();
         }
         String queryString= parameter.getQueryString();
@@ -37,5 +37,16 @@ public class AdminMemberController {
         model.addAttribute("totalCount",totalCount);
         model.addAttribute("pager",pageUtil.pager());
         return "admin/member/list";
+    }
+
+    @GetMapping("/admin/member/detail.do")
+    public String detail(Model model , MemberParam parameter){
+
+        parameter.init();
+        MemberDto member= memberService.detail(parameter.getUserId())   ;
+        model.addAttribute("member",member);
+
+
+        return "admin/member/detail";
     }
 }
