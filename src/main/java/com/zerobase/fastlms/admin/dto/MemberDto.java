@@ -30,6 +30,8 @@ public class MemberDto {
 
     private boolean adminYn; //관리자 판단
 
+    private String userStatus;
+
       //추가컬럼
     private long totalCount;
 
@@ -49,6 +51,7 @@ public class MemberDto {
                 .resetPasswordLimitDt(member.getResetPasswordLimitDt())
 
                 .adminYn(member.isAdminYn())
+                .userStatus(member.getUserStatus())
                 .build();
     }
 

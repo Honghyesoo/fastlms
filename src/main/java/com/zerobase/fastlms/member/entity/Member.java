@@ -16,7 +16,7 @@ import java.util.Collection;
 @Builder
 @Data
 @Entity
-public class Member implements UserDetails {
+public class Member implements UserDetails , MemberCode  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,6 +36,7 @@ public class Member implements UserDetails {
 
     private boolean adminYn; //관리자 판단
 
+    private String userStatus; //이용가능한 상태, 정지상태
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

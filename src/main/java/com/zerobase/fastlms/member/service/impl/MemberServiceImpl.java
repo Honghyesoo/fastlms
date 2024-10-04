@@ -8,7 +8,9 @@ import com.zerobase.fastlms.member.dto.MemberInput;
 import com.zerobase.fastlms.member.dto.ResetPasswordInput;
 import com.zerobase.fastlms.member.entity.Member;
 //import com.zerobase.fastlms.member.exception.MemberNotEmailAuthException;
+import com.zerobase.fastlms.member.entity.MemberCode;
 import com.zerobase.fastlms.member.exception.MemberNotEmailAuthException;
+import com.zerobase.fastlms.member.exception.MemberStopUserException;
 import com.zerobase.fastlms.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -53,6 +55,7 @@ public class MemberServiceImpl implements MemberService {
                 .regDt(LocalDateTime.now())
                 .emailAuthYn(false)
                 .emailAuthKey(uuid)
+                .userStatus(Member.MEMBER_STATUS_REQ)
                 .build();
         memberRepository.save(member);
 
@@ -80,6 +83,7 @@ public class MemberServiceImpl implements MemberService {
         if (member.isEmailAuthYn()){
             return false;
         }
+        member.setUserStatus(MemberCode.MEMBER_STATUS_ING);
         member.setEmailAuthYn(true);
         member.setEmailAuthDt(LocalDateTime.now());
         memberRepository.save(member);
@@ -194,7 +198,7 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
-    //회원 상세정보
+    //회원 상세정보 (관리자전용)
     @Override
     public MemberDto detail(String userId) {
         Optional<Member> optionalMember= memberRepository.findByUserId(userId);
@@ -208,6 +212,36 @@ public class MemberServiceImpl implements MemberService {
         return MemberDto.of(member);
     }
 
+    //회원상태 변경 (관리자전용)
+    @Override
+    public boolean updateStatus(String userId, String userStatus) {
+        Optional<Member> optionalMember = memberRepository.findByUserId(userId);
+        if (optionalMember.isEmpty()) {
+            throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+        }
+        Member member = optionalMember.get();
+        member.setUserStatus(userStatus);
+        memberRepository.save(member);
+        return true;
+    }
+
+    //비밀번호 초기화(관리자전용)
+    @Override
+    public boolean updatePassword(String userId, String password) {
+        Optional<Member> optionalMember = memberRepository.findByUserId(userId);
+        if (optionalMember.isEmpty()) {
+            throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+        }
+
+        Member member = optionalMember.get();
+
+        String encPassword = BCrypt.hashpw(password,BCrypt.gensalt());
+
+        member.setPassword(encPassword);
+        memberRepository.save(member);
+        return true;
+    }
+
     //로그인
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -217,8 +251,13 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Member member = optionalMember.get();
-        if (!member.isEmailAuthYn()){
+
+        if (Member.MEMBER_STATUS_REQ.equals(member.getUserStatus())){
             throw  new MemberNotEmailAuthException("이메일 활성화 이후에 로그인을 해주세요.");
+        }
+
+        if (Member.MEMBER_STATUS_STOP.equals(member.getUserStatus())){
+            throw  new MemberStopUserException("정지된 회원 입니다.");
         }
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
