@@ -1,6 +1,8 @@
 package com.zerobase.fastlms.member.Repository;
 
 import com.zerobase.fastlms.member.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +22,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //uuid 찾느 메서드
     Optional<Member> findByResetPasswordKey(String resetPasswordKey);
 
-
+    Page<Member> findByUserIdContaining(String userId, Pageable pageable);
+    Page<Member> findByNameContaining(String name, Pageable pageable);
+    Page<Member> findByPhoneContaining(String phone, Pageable pageable);
+    Page<Member> findByUserIdContainingOrNameContainingOrPhoneContaining(
+            String userId, String name, String phone, Pageable pageable);
 }
 

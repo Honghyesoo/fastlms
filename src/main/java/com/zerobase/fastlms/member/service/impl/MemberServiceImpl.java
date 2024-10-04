@@ -1,7 +1,6 @@
 package com.zerobase.fastlms.member.service.impl;
 
 import com.zerobase.fastlms.admin.dto.MemberDto;
-import com.zerobase.fastlms.admin.entity.MemberParam;
 import com.zerobase.fastlms.admin.mapper.MemberMapper;
 import com.zerobase.fastlms.components.MailComponents;
 import com.zerobase.fastlms.member.Repository.MemberRepository;
@@ -12,6 +11,8 @@ import com.zerobase.fastlms.member.entity.Member;
 import com.zerobase.fastlms.member.exception.MemberNotEmailAuthException;
 import com.zerobase.fastlms.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -164,22 +164,34 @@ public class MemberServiceImpl implements MemberService {
 
     //회원목록
     @Override
-    public List<MemberDto> list(MemberParam parameter) {
-
-        long totalCount = memberMapper.selectListCount(parameter);
-
-        List<MemberDto> list =  memberMapper.selectList(parameter);
-        list.sort((a, b) -> Long.compare(b.getId(), a.getId()));
-        if (!CollectionUtils.isEmpty(list)){
-            int i = 0;
-            for(MemberDto x: list){
-                x.setTotalCount(totalCount);
-            }
-            i++;
+    public Page<MemberDto> list(String searchType, String searchValue, Pageable pageable) {
+        if (searchType == null || searchValue == null) {
+            return memberRepository.findAll(pageable).map(this::convertToDto);
         }
 
-        return list;
-//        return memberRepository.findAll();
+        switch (searchType) {
+            case "userId":
+                return memberRepository.findByUserIdContaining(searchValue, pageable).map(this::convertToDto);
+            case "name":
+                return memberRepository.findByNameContaining(searchValue, pageable).map(this::convertToDto);
+            case "phone":
+                return memberRepository.findByPhoneContaining(searchValue, pageable).map(this::convertToDto);
+            default:
+                return memberRepository.findByUserIdContainingOrNameContainingOrPhoneContaining(
+                        searchValue, searchValue, searchValue, pageable).map(this::convertToDto);
+        }
+    }
+
+    private MemberDto convertToDto(Member member) {
+        return MemberDto.builder()
+                .id(member.getId())
+                .userId(member.getUserId())
+                .name(member.getName())
+                .phone(member.getPhone())
+                .emailAuthYn(member.isEmailAuthYn())
+                .adminYn(member.isAdminYn())
+                .regDt(member.getRegDt())
+                .build();
     }
 
     //회원 상세정보

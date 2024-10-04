@@ -1,12 +1,12 @@
 package com.zerobase.fastlms.member.service;
 
 import com.zerobase.fastlms.admin.dto.MemberDto;
-import com.zerobase.fastlms.admin.entity.MemberParam;
 import com.zerobase.fastlms.member.dto.MemberInput;
 import com.zerobase.fastlms.member.dto.ResetPasswordInput;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public interface MemberService extends UserDetailsService {
 
@@ -35,8 +35,11 @@ public interface MemberService extends UserDetailsService {
     /**
      * 회원 목록 리턴(관리자에서만 허용가능)
      */
-    List<MemberDto> list(MemberParam parameter);
-
+    Page<MemberDto> list(
+            @RequestParam(name = "searchValue") String searchValue,
+            @RequestParam(name = "searchType") String searchType,
+            Pageable pageable
+    );
 
     /**
      * 회원 상세 정보
