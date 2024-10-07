@@ -1,4 +1,4 @@
-package com.zerobase.fastlms.member.Repository;
+package com.zerobase.fastlms.member.repository;
 
 import com.zerobase.fastlms.member.entity.Member;
 import org.springframework.data.domain.Page;

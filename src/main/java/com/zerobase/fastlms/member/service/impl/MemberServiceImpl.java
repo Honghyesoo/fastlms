@@ -3,7 +3,7 @@ package com.zerobase.fastlms.member.service.impl;
 import com.zerobase.fastlms.admin.dto.MemberDto;
 import com.zerobase.fastlms.admin.mapper.MemberMapper;
 import com.zerobase.fastlms.components.MailComponents;
-import com.zerobase.fastlms.member.Repository.MemberRepository;
+import com.zerobase.fastlms.member.repository.MemberRepository;
 import com.zerobase.fastlms.member.dto.MemberInput;
 import com.zerobase.fastlms.member.dto.ResetPasswordInput;
 import com.zerobase.fastlms.member.entity.Member;
