@@ -2,7 +2,7 @@ package com.zerobase.fastlms.admin.controller;
 
 import com.zerobase.fastlms.admin.dto.MemberDto;
 import com.zerobase.fastlms.admin.entity.MemberParam;
-import com.zerobase.fastlms.admin.entity.MemberInput;
+import com.zerobase.fastlms.admin.model.MemberInput;
 import com.zerobase.fastlms.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -1,22 +1,23 @@
-package com.zerobase.fastlms.admin.service;
+    package com.zerobase.fastlms.admin.service;
 
-import com.zerobase.fastlms.admin.dto.CategoryDto;
-import com.zerobase.fastlms.admin.entity.Category;
-import org.springframework.stereotype.Service;
+    import com.zerobase.fastlms.admin.dto.CategoryDto;
+    import com.zerobase.fastlms.admin.entity.Category;
+    import com.zerobase.fastlms.admin.model.CategoryInput;
+    import org.springframework.stereotype.Service;
 
-import java.util.List;
+    import java.util.List;
 
 
-public interface CategoryService {
+    public interface CategoryService {
 
-    List<CategoryDto> list();
+        List<CategoryDto> list();
 
-    // 카테고리 신규추가
-    boolean add(String categoryName);
+        // 카테고리 신규추가
+        boolean add(String categoryName);
 
-    //카테고리 수정
-    boolean update(CategoryDto parameter);
+        //카테고리 수정
+        boolean update(CategoryInput parameter);
 
-    //카텍고리 삭제
-    boolean del(long id);
-}
+        //카텍고리 삭제
+        boolean del(long id);
+    }

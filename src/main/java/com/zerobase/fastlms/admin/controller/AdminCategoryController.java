@@ -1,23 +1,14 @@
 package com.zerobase.fastlms.admin.controller;
 
 import com.zerobase.fastlms.admin.dto.CategoryDto;
-import com.zerobase.fastlms.admin.dto.MemberDto;
-import com.zerobase.fastlms.admin.entity.CategoryInput;
-import com.zerobase.fastlms.admin.entity.MemberInput;
+import com.zerobase.fastlms.admin.model.CategoryInput;
 import com.zerobase.fastlms.admin.entity.MemberParam;
 import com.zerobase.fastlms.admin.service.CategoryService;
-import com.zerobase.fastlms.member.service.MemberService;
-import jdk.jfr.Category;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -39,6 +30,18 @@ public class AdminCategoryController {
     public String add(Model model, CategoryInput parameter){
 
         boolean result = categoryService.add(parameter.getCategoryName());
+        return "redirect:/admin/category/list.do";
+    }
+
+    @PostMapping("admin/category/delete.do")
+    public String del(Model model, CategoryInput parameter){
+        boolean result = categoryService.del(parameter.getId());
+        return "redirect:/admin/category/list.do";
+    }
+
+    @PostMapping("admin/category/update.do")
+    public String update(Model model, CategoryInput parameter){
+        boolean result = categoryService.update(parameter);
         return "redirect:/admin/category/list.do";
     }
 
