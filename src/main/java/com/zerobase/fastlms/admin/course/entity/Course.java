@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.checkerframework.checker.units.qual.C;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -22,7 +23,7 @@ public class Course {
     long categoryId;
 
     String imagePath;
-    String keyWord;
+    String keyword;
     String subject;
 
     @Column(length = 1000)
@@ -32,7 +33,7 @@ public class Course {
     String contents;
     long price;
     long salePrice;
-    LocalDateTime saleEndDt;
+    LocalDate saleEndDt; //할인 종료일
 
     LocalDateTime regDt; //등록일 (추가날짜)
     LocalDateTime udtDt; //수정일 (추가날짜)
