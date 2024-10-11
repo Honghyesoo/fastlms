@@ -64,6 +64,27 @@ public class CourseServiceImpl implements CourseService{
          return (CourseDto) courseRepository.findById(id).map(CourseDto::of).orElse(null);
     }
 
+    //강좌내용삭제
+    @Override
+    public boolean del(String idList) {
+
+        if (idList != null && idList.length() > 0){
+            String[] ids = idList.split(",");
+            for (String x : ids){
+                long id = 0L;
+                try{
+                    id =Long.parseLong(x);
+                }catch (Exception e){
+
+                }
+                if (id > 0 ){
+                    courseRepository.deleteById(id);
+                }
+            }
+        }
+        return true ;
+    }
+
     @Override
     public boolean set(CourseInput parameter) {
         LocalDate saleEndDt = getLocalDate(parameter.getSaleEndDtText());

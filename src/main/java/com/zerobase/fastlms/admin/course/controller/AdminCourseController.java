@@ -32,6 +32,8 @@ public class AdminCourseController {
         Page<CourseDto> courseList = courseService.list(pageable);
         model.addAttribute("courseList", courseList);
 
+        // 총 데이터 수량을 모델에 추가
+        model.addAttribute("totalElements", courseList.getTotalElements());
         return "admin/course/list";
     }
 
@@ -61,23 +63,11 @@ public class AdminCourseController {
         return "admin/course/add";
     }
 
-    @PostMapping(value = {"/admin/course/add.do", "/admin/course/edit.do"})
-    public String addSubmit(Model model,HttpServletRequest request,
-                            CourseInput parameter){
-        boolean editMode = request.getRequestURI().contains("/edit.do");
 
-        if (editMode){
-            long id = parameter.getId();
-            CourseDto existCourse = courseService.getById(id);
-            if (existCourse == null){
-                //error처리
-                model.addAttribute("message","강좌정보가 존재하지 않습니다.");
-                return "common/error";
-            }
-            boolean result = courseService.set(parameter);
-        }else{
-            boolean result = courseService.add(parameter);
-        }
+    @PostMapping("/admin/course/delete.do")
+    public String del(Model model,HttpServletRequest request,
+                            CourseInput parameter){
+      boolean result = courseService.del(parameter.getIdList());
         return "redirect:/admin/course/list.do";
     }
 
