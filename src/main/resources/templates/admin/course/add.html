@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>강좌등록</title>
+    <style>
+        .list table {
+           width: 100%;
+           margin-top: 10px;
+           border-collapse: collapse;
+           text-align: center;
+       }
+       .list table th, .list table td {
+           border: solid 1px #ddd;
+       }
+       .list table th {
+           background-color: #f2f2f2;
+           font-weight: bold;
+           padding: 3px;
+       }
+       .list table td {
+           background-color: #fff;
+           color: #666;
+       }
+        .buttons{
+            text-align: center;
+            margin-top: 20px;
+        }
+        .buttons a, .buttons button{
+            border-width:0;
+            background-color:transparent;
+            text-decoration: underline;
+            font-size:15px;
+            line-height:20px;
+            height:20px;
+            color:#000;
+            cursor:pointer;
+    </style>
+</head>
+<body>
+<h1>강좌 관리 - 강좌 등록</h1>
+
+<div class="datail">
+    <form method="post">
+        <table>
+            <tbody>
+            <tr>
+                <th>강좌 카테고리</th>
+                <td>
+                    <select name="categoryId" required>
+                        <option value="">카테고리 선택</option>
+                        <option th:each="x:${category}" th:value="${x.id}" th:text="${x.categoryName}">기획</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>강좌명</th>
+                <td>
+                    <input th:value="${detail.subject}" type="text" name="subject" required placeholder="강좌명 입력"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="buttons">
+            <button th:if="${editMode}" type="submit">강좌 수정 하기</button>
+            <button th:if="${!editMode}" type="submit">강좌 등록 하기</button>
+            <a href="/admin/course/list.do">목록 이동</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

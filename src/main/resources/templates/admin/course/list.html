@@ -22,6 +22,19 @@
            background-color: #fff;
            color: #666;
        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination li.active {
+            font-weight: bold;
+            color: red;
+        }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -36,20 +49,73 @@
 <body>
 <h1>강좌 관리</h1>
 <div th:replace="/fragments/layout.html :: fragment-admin-body-menu"></div>
+<div>
+    <a href="/admin/course/add.do">강좌 등록</a>
+</div>
 
 <div class="list">
     <table>
         <thead>
         <tr>
             <th>ID</th>
-            <th>카테고리명</th>
-            <th>순서</th>
-            <th>사용여부</th>
-            <th>비고</th>
+            <th>강좌명</th>
+            <th>등록일</th>
         </tr>
         </thead>
 
+        <tbody>
+        <tr th:each="x : ${courseList}">
+            <td th:text="${x.id}"></td>
+            <td>
+                <p>
+                    <a th:href="'edit.do?id=' + ${x.id}" th:text="${x.subject}"/>
+                </p>
+            </td>
+            <td>
+                <p th:text="${x.regDt}"></p>
+            </td>
+        </tr>
+        </tbody>
+
     </table>
+
+    <div class="pagination" th:if="${courseList.totalPages > 0}">
+        <ul class="pagination">
+            <!-- 이전 페이지 -->
+            <li th:class="${courseList.first ? 'disabled' : ''}">
+                <a th:if="${not courseList.first}"
+                   th:href="@{/admin/course/list.do(
+                    page=${courseList.number-1},
+                    size=${courseList.size},
+                    searchType=${param.searchType},
+                    searchValue=${param.searchValue})}">&laquo;</a>
+                <span th:if="${courseList.first}">&laquo;</span>
+            </li>
+
+            <!-- 페이지 번호 -->
+            <li th:each="pageNo : ${#numbers.sequence(0, courseList.totalPages - 1)}"
+                th:class="${pageNo == courseList.number ? 'active' : ''}">
+                <a th:href="@{/admin/course/list.do(
+                    page=${pageNo},
+                    size=${courseList.size},
+                    searchType=${param.searchType},
+                    searchValue=${param.searchValue})}"
+                   th:text="${pageNo + 1}"></a>
+            </li>
+
+            <!-- 다음 페이지 -->
+            <li th:class="${courseList.last ? 'disabled' : ''}">
+                <a th:if="${not courseList.last}"
+                   th:href="@{/admin/course/list.do(
+                    page=${courseList.number+1},
+                    size=${courseList.size},
+                    searchType=${param.searchType},
+                    searchValue=${param.searchValue})}">&raquo;</a>
+                <span th:if="${courseList.last}">&raquo;</span>
+            </li>
+        </ul>
+    </div>
+
 </div>
 </body>
 </html>
