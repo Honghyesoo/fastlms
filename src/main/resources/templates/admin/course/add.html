@@ -37,20 +37,29 @@
             cursor: pointer;
         }
     </style>
+    <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
     <script>
+        // CKEditor 초기화
+        window.onload = function() {
+            CKEDITOR.replace('contents');
+        };
+
         $(document).ready(function() {
             $('#submitForm').on('submit', function() {
                 // 에디터의 내용이 textarea에 적용됩니다.
-                oEditors.getById["contents"].exec("UPDATE_CONTENTS_FIELD", []);
+                for (instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
             });
         });
     </script>
 </head>
+
 <body>
 <h1>강좌 관리 - 강좌 등록</h1>
 
 <div class="datail">
-    <form id="subitForm" method="post">
+    <form method="post">
         <table>
             <tbody>
             <tr>
@@ -118,15 +127,5 @@
         </div>
     </form>
 </div>
-<script type="text/javascript" src="/res/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
-<script type="text/javascript">
-    var oEditors = [];
-    nhn.husky.EZCreator.createInIFrame({
-     oAppRef: oEditors,
-     elPlaceHolder: "contents",
-     sSkinURI: "/res/se2/SmartEditor2Skin.html",
-     fCreator: "createSEditor2"
-    });
-</script>
 </body>
 </html>
