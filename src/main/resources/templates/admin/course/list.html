@@ -107,10 +107,9 @@
 
 </head>
 <body>
+<div th:replace="/fragments/layout.html :: fragment-admin-body-menu"></div>
 <h1>강좌 관리</h1>
 <div class="list">
-    <div th:replace="/fragments/layout.html :: fragment-admin-body-menu"></div>
-
     <div class="buttons">
         <a href="/admin/course/add.do">강좌 등록</a>
         <button id="deleteButton" type="button">선택 삭제</button>

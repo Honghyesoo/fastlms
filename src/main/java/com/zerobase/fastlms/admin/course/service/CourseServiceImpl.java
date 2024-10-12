@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -83,6 +84,14 @@ public class CourseServiceImpl implements CourseService{
             }
         }
         return true ;
+    }
+
+    //프론트 강좌 목록
+    @Override
+    public List<CourseDto> frontList() {
+
+        List<Course> courseList = courseRepository.findAll();
+        return CourseDto.of(courseList);
     }
 
     @Override

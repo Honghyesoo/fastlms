@@ -4,21 +4,23 @@
     <meta charset="UTF-8">
     <title>강좌등록</title>
     <style>
-        .list table {
+        .datail table {
            width: 100%;
            margin-top: 10px;
            border-collapse: collapse;
            text-align: center;
        }
-       .list table th, .list table td {
+       .datail table th, .datail table td {
            border: solid 1px #ddd;
        }
-       .list table th {
+       .datail table th {
            background-color: #f2f2f2;
            font-weight: bold;
            padding: 3px;
        }
-       .list table td {
+       .datail table td {
+           text-align:left;
+           padding-left:0.5px;
            background-color: #fff;
            color: #666;
        }
@@ -56,6 +58,7 @@
 </head>
 
 <body>
+<div th:replace="/fragments/layout.html :: fragment-admin-body-menu"></div>
 <h1>강좌 관리 - 강좌 등록</h1>
 
 <div class="datail">

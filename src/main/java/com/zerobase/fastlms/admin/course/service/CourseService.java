@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 public interface CourseService {
 
     // 강좌 등록
@@ -25,6 +27,9 @@ public interface CourseService {
 
     //강좌내용삭제
     boolean del(String idList);
+
+    //프론트 강좌 목록
+    List<CourseDto> frontList();
 
 }
 
