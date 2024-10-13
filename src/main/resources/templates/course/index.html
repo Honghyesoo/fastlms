@@ -1,35 +1,48 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>강좌 목록 페이지</title>
     <style>
-        span.price{
-            text-decoration:line-through;
+        span.price {
+            text-decoration: line-through;
+        }
+        a.active {
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div th:replace="/fragments/layout.html :: fragment-body-menu"></div>
-    <h1>강좌 목록 페이지</h1>
+<h1>강좌 목록 페이지</h1>
 
+<div>
+    <a th:href="@{/course}" th:class="${selectedCategoryId == null ? 'active' : ''}">전체</a>
 
-    <ul>
-        <li th:each=" x : ${list}">
+    <th:block th:each="category : ${categoryList}">
+        |
+        <a th:href="@{/course(categoryId=${category.id})}"
+           th:class="${category.id == selectedCategoryId ? 'active' : ''}">
+            <span th:text="${category.categoryName}">카테고리명</span>
+        </a>
+    </th:block>
+</div>
+<hr/>
+
+<ul>
+    <li th:each="course : ${list}">
+        <div>
+            <a th:href="@{/course/{id}(id=${course.id})}">
+                <h3 th:text="${course.subject}">강좌명</h3>
+            </a>
             <div>
-                <a th:href="'/course/' + ${x.id}">
-                    <h3 th:text="${x.subject}">강좌명</h3>
-                </a>
-                <div>
-                    <p th:text="${x.summary}"></p>
-                    <p>
-                    판매가: <span  class="price" th:text="${x.price}"></span>
-                    할인가: <span th:text="${x.salePrice}"></span>
-                    </p>
-                </div>
+                <p th:text="${course.summary}"></p>
+                <p>
+                    판매가: <span class="price" th:text="${course.price}"></span>
+                    할인가: <span th:text="${course.salePrice}"></span>
+                </p>
             </div>
-        </li>
-    </ul>
-
+        </div>
+    </li>
+</ul>
 </body>
 </html>

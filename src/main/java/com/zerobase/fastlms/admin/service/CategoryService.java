@@ -3,6 +3,8 @@
     import com.zerobase.fastlms.admin.dto.CategoryDto;
     import com.zerobase.fastlms.admin.entity.Category;
     import com.zerobase.fastlms.admin.model.CategoryInput;
+    import org.springframework.data.domain.Page;
+    import org.springframework.data.domain.Pageable;
     import org.springframework.stereotype.Service;
 
     import java.util.List;
@@ -20,4 +22,6 @@
 
         //카텍고리 삭제
         boolean del(long id);
+
+        Page<Category> frontList(Pageable pageable);
     }

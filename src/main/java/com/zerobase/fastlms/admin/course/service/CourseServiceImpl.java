@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -86,13 +87,20 @@ public class CourseServiceImpl implements CourseService{
         return true ;
     }
 
-    //프론트 강좌 목록
     @Override
     public List<CourseDto> frontList() {
-
         List<Course> courseList = courseRepository.findAll();
-        return CourseDto.of(courseList);
+        return courseList.stream().map(CourseDto::of).collect(Collectors.toList());
     }
+
+    @Override
+    public List<CourseDto> getCoursesByCategoryId(Long categoryId) {
+        List<Course> courseList = courseRepository.findByCategoryId(categoryId);
+        return courseList.stream().map(CourseDto::of).collect(Collectors.toList());
+    }
+
+
+    //프론트 강좌 목록
 
     @Override
     public boolean set(CourseInput parameter) {

@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -47,17 +45,5 @@ public class CourseDto {
                 .regDt(course.getRegDt())
                 .udtDt(course.getUdtDt())
                 .build();
-    }
-
-    //프론트 강좌 목록 구현
-    public static List<CourseDto> of(List<Course> courses){
-        if (courses == null) {
-            return null;
-        }
-        List<CourseDto> courseList = new ArrayList<>();
-        for (Course x : courses){
-                courseList.add(CourseDto.of(x));
-        }
-        return courseList;
     }
 }

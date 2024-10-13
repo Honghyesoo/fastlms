@@ -2,6 +2,7 @@ package com.zerobase.fastlms.admin.course.service;
 
 import com.zerobase.fastlms.admin.course.dto.CourseDto;
 import com.zerobase.fastlms.admin.course.model.CourseInput;
+import com.zerobase.fastlms.admin.dto.CategoryDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,5 +32,6 @@ public interface CourseService {
     //프론트 강좌 목록
     List<CourseDto> frontList();
 
+    List<CourseDto> getCoursesByCategoryId(Long categoryId);
 }
 
