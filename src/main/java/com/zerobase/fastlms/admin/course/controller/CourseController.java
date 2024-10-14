@@ -15,10 +15,13 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RequiredArgsConstructor
 @Controller
@@ -45,4 +48,10 @@ public class CourseController {
         return "course/index";
     }
 
+    @GetMapping("/course/{id}")
+    public String courseDetail(Model model, @PathVariable("id") Long id){
+        CourseDto detail = courseService.frontDetail(id);
+        model.addAttribute("detail", detail);
+        return "course/detail";
+    }
 }

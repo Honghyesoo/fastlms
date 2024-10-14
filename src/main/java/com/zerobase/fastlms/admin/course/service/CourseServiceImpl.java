@@ -7,7 +7,6 @@ import com.zerobase.fastlms.admin.course.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -97,6 +96,14 @@ public class CourseServiceImpl implements CourseService{
     public List<CourseDto> getCoursesByCategoryId(Long categoryId) {
         List<Course> courseList = courseRepository.findByCategoryId(categoryId);
         return courseList.stream().map(CourseDto::of).collect(Collectors.toList());
+    }
+
+    //프론트 강좌 상세 정보
+    @Override
+    public CourseDto frontDetail(Long id) {
+        return courseRepository.findById(id)
+                .map(CourseDto::of)
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
     }
 
 

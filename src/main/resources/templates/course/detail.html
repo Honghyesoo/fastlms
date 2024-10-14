@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>강좌 상세 페이지</title>
+    <style>
+      span.price{
+        text-decoration:line-through;
+      }
+    </style>
+</head>
+<body>
+    <div th:replace="/fragments/layout.html :: fragment-body-menu"></div>
+    <h1>강좌 상세 페이지 </h1>
+    <div th:if="${detail != null}">
+        <h2>강좌명 : <span th:text="${detail.subject}">강좌</span></h2>
+        <p th:text="${detail.summary}">강좌 요약</p>
+        <div th:utext="${detail.contents}"></div>
+        <div>
+            <p>가격 : <span th:text="${detail.price}"></span></p>
+            <p>할인 가격 : <span th:text="${detail.salePrice}"></span></p>
+        </div>
+    </div>
+    <div th:if="${detail == null}">
+        <p>해당 강좌를 찾을 수 없습니다.</p>
+    </div>
+    <div>
+        <button type="button">수강신청</button>
+        <a href="/course">강좌목록</a>
+    </div>
+</body>
+</html>
