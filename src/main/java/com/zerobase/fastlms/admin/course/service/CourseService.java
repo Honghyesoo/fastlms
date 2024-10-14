@@ -33,5 +33,8 @@ public interface CourseService {
 
     //프론트 강좌 상세 정보
     CourseDto frontDetail(Long id);
+
+    //수강신청
+    boolean req(Long courseId, String username);
 }
 

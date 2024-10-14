@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Entity
-public class Course {
+public class Course { //강좌
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

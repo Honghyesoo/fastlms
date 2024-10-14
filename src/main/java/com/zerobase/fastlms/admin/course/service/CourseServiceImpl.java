@@ -2,8 +2,11 @@ package com.zerobase.fastlms.admin.course.service;
 
 import com.zerobase.fastlms.admin.course.dto.CourseDto;
 import com.zerobase.fastlms.admin.course.entity.Course;
+import com.zerobase.fastlms.admin.course.entity.TakeCourse;
+import com.zerobase.fastlms.admin.course.entity.TakeCourseCode;
 import com.zerobase.fastlms.admin.course.model.CourseInput;
 import com.zerobase.fastlms.admin.course.repository.CourseRepository;
+import com.zerobase.fastlms.admin.course.repository.TakeCourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class CourseServiceImpl implements CourseService{
     private final CourseRepository courseRepository;
+    private final TakeCourseRepository takeCourseRepository;
     private LocalDate getLocalDate(String value){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try{
@@ -104,6 +108,38 @@ public class CourseServiceImpl implements CourseService{
         return courseRepository.findById(id)
                 .map(CourseDto::of)
                 .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+    }
+
+    // 수강신청
+    @Override
+    public boolean req(Long courseId, String username) {
+
+        Optional<Course> optionalCourse = courseRepository.findById(courseId);
+
+        if(optionalCourse.isEmpty()){
+            return false;
+        }
+
+        Course course = optionalCourse.get();
+
+        //이미 신청정보가 있는지 확인
+        String[] statusList = {TakeCourseCode.STATUS_REQ,TakeCourseCode.STATUS_COMPLETE};
+        long count = takeCourseRepository.countByCourseIdAndUserIdAndStatusIn(
+                course.getId(),username, List.of(statusList));
+        if (count > 0){
+            return false;
+        }
+
+        TakeCourse takeCourse = TakeCourse.builder()
+                .courseId(course.getId())
+                .userId(username)
+                .payPrice(course.getSalePrice())
+                .regDt(LocalDateTime.now())
+                .status(TakeCourseCode.STATUS_REQ)
+                .build();
+        takeCourseRepository.save(takeCourse);
+
+        return true;
     }
 
 
